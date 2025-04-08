@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Healthcare Battle Royale</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+      position: relative;
+    }
+    h1 {
+      color: #000;
+    }
+    .choices a {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      background-color: #000;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+    .choices a:hover {
+      background-color: #444;
+    }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 14px;
+      background-color: #000;
+      color: #fff;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .back-button:hover {
+      background-color: #444;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="page">Loading...</div>
+
+<script>
+  const pages = {
+    start: {
+      title: "Healthcare Battle Royale",
+      description: "INSERT TEXT HERE",
+      question: "What gender do you want to choose?",
+      choices: {
+        "Female": "female",
+        "Male": "male"
+      }
+    },
+    female: {
+      title: "Female",
+      description: "INSERT TEXT HERE",
+      question: "Where would you like to be born?",
+      choices: {
+        "U.S.": "us",
+        "Canada": "canada",
+        "Netherlands": "netherlands",
+        "Singapore": "singapore"
+      }
+    },
+    male: {
+      title: "Male",
+      description: "INSERT TEXT HERE",
+      question: "Where would you like to be born?",
+      choices: {
+        "U.S.": "us",
+        "Canada": "canada",
+        "Netherlands": "netherlands",
+        "Singapore": "singapore"
+      }
+    },
+    us: {
+      title: "U.S.",
+      description: "INSERT TEXT HERE",
+      question: "What social class do you belong to?",
+      choices: {
+        "Poor": "poor",
+        "Normal": "normal",
+        "Wealthy": "wealthy"
+      }
+    },
+    canada: {
+      title: "Canada",
+      description: "INSERT TEXT HERE",
+      question: "What social class do you belong to?",
+      choices: {
+        "Poor": "poor",
+        "Normal": "normal",
+        "Wealthy": "wealthy"
+      }
+    },
+    netherlands: {
+      title: "Netherlands",
+      description: "INSERT TEXT HERE",
+      question: "What social class do you belong to?",
+      choices: {
+        "Poor": "poor",
+        "Normal": "normal",
+        "Wealthy": "wealthy"
+      }
+    },
+    singapore: {
+      title: "Singapore",
+      description: "INSERT TEXT HERE",
+      question: "What social class do you belong to?",
+      choices: {
+        "Poor": "poor",
+        "Normal": "normal",
+        "Wealthy": "wealthy"
+      }
+    },
+    poor: {
+      title: "Poor",
+      description: "INSERT TEXT HERE",
+      question: "For what do you need medical assistance?",
+      choices: {
+        "Old-Age": "oldage",
+        "Cancer": "cancer",
+        "Diabetes": "diabetes",
+        "Cover": "cover",
+        "Fever": "fever",
+        "Surgery": "surgery"
+      }
+    },
+    normal: {
+      title: "Normal",
+      description: "INSERT TEXT HERE",
+      question: "For what do you need medical assistance?",
+      choices: {
+        "Old-Age": "oldage",
+        "Cancer": "cancer",
+        "Diabetes": "diabetes",
+        "Cover": "cover",
+        "Fever": "fever",
+        "Surgery": "surgery"
+      }
+    },
+    wealthy: {
+      title: "Wealthy",
+      description: "INSERT TEXT HERE",
+      question: "For what do you need medical assistance?",
+      choices: {
+        "Old-Age": "oldage",
+        "Cancer": "cancer",
+        "Diabetes": "diabetes",
+        "Cover": "cover",
+        "Fever": "fever",
+        "Surgery": "surgery"
+      }
+    },
+    cancer: {
+      title: "Cancer",
+      description: "INSERT TEXT HERE",
+      question: "Would you like to try again?",
+      choices: {
+        "Yes": "start",
+        "No": "end"
+      }
+    },
+    oldage: {
+      title: "Old-Age",
+      description: "INSERT TEXT HERE",
+      question: "Would you like to try again?",
+      choices: {
+        "Yes": "start",
+        "No": "end"
+      }
+    },
+    diabetes: {
+      title: "Diabetes",
+      description: "INSERT TEXT HERE",
+      question: "Would you like to try again?",
+      choices: {
+        "Yes": "start",
+        "No": "end"
+      }
+    },
+    cover: {
+      title: "Cover",
+      description: "INSERT TEXT HERE",
+      question: "Would you like to try again?",
+      choices: {
+        "Yes": "start",
+        "No": "end"
+      }
+    },
+    fever: {
+      title: "Fever",
+      description: "INSERT TEXT HERE",
+      question: "Would you like to try again?",
+      choices: {
+        "Yes": "start",
+        "No": "end"
+      }
+    },
+    surgery: {
+      title: "Surgery",
+      description: "INSERT TEXT HERE",
+      question: "Would you like to try again?",
+      choices: {
+        "Yes": "start",
+        "No": "end"
+      }
+    },
+    end: {
+      title: "Thank You",
+      description: "Thank you for having played with us.",
+      question: "",
+      choices: {}
+    }
+  };
+
+  const historyStack = [];
+
+  function loadPage(pageId) {
+    const page = pages[pageId];
+    const container = document.getElementById("page");
+
+    if (!page) {
+      container.innerHTML = "<h1>Error</h1><p>Page not found.</p>";
+      return;
+    }
+
+    container.innerHTML = `
+      ${historyStack.length > 0 ? `<button class="back-button" onclick="goBack()">← Back</button>` : ""}
+      <h1>${page.title}</h1>
+      <p>${page.description}</p>
+      ${page.question ? `<p><strong>${page.question}</strong></p>` : ""}
+      <div class="choices">
+        ${Object.keys(page.choices).map(choice => `
+          <a href="#" onclick="navigate('${pageId}', '${page.choices[choice]}')">${choice}</a>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function navigate(fromPage, toPage) {
+    historyStack.push(fromPage);
+    loadPage(toPage);
+  }
+
+  function goBack() {
+    const previousPage = historyStack.pop();
+    if (previousPage) {
+      loadPage(previousPage);
+    }
+  }
+
+  window.onload = () => loadPage("start");
+</script>
+
+</body>
+</html>
